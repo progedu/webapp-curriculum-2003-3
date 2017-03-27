@@ -1,11 +1,18 @@
 object OptionStudy {
 
   trait Option[+A] {
-    def map[B](f: A => B): Option[B] = ???
+    def map[B](f: A => B): Option[B] = this match {
+      case Some(s) => Some(f(s))
+      case None => None
+    }
 
-    def getOrElse[B >: A](default: => B): B = ???
 
-    def flatMap[B](f: A => Option[B]): Option[B] = ???
+    def getOrElse[B >: A](default: => B): B = this match {
+      case Some(s) => s
+      case _ => default
+    }
+
+    def flatMap[B](f: A => Option[B]): Option[B] = map(f).getOrElse(None)
   }
 
   case class Some[+A](get: A) extends Option[A]
